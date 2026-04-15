@@ -37,6 +37,12 @@ public class Booking {
     @Column(nullable = false)
     private String travelDate; // YYYY-MM-DD
 
+    @Column(nullable = true)
+    private String passengerName;
+
+    @Column(nullable = true)
+    private String passengerContact;
+
     @CreationTimestamp
     private LocalDateTime bookingDate;
 
@@ -112,5 +118,21 @@ public class Booking {
 
     public void setTravelDate(String travelDate) {
         this.travelDate = travelDate;
+    }
+
+    public String getPassengerName() {
+        return passengerName;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
+    }
+
+    public String getPassengerContact() {
+        return passengerContact;
+    }
+
+    public void setPassengerContact(String passengerContact) {
+        this.passengerContact = passengerContact;
     }
 }

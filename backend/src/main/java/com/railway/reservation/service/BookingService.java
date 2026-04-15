@@ -22,7 +22,7 @@ public class BookingService {
     TrainRepository trainRepository;
 
     @Transactional
-    public Booking bookTicket(User user, Long trainId, Integer seats, String travelDate) {
+    public Booking bookTicket(User user, Long trainId, Integer seats, String travelDate, String passengerName, String passengerContact) {
         Train train = trainRepository.findById(trainId)
                 .orElseThrow(() -> new RuntimeException("Train not found"));
 
@@ -42,6 +42,8 @@ public class BookingService {
         booking.setTotalPrice(train.getPrice().multiply(new BigDecimal(seats)));
         booking.setStatus("BOOKED");
         booking.setTravelDate(travelDate);
+        booking.setPassengerName(passengerName);
+        booking.setPassengerContact(passengerContact);
 
         return bookingRepository.save(booking);
     }

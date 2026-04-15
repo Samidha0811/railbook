@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { bookingService, trainService } from '../services/api';
 import Swal from 'sweetalert2';
-import { Search, Filter, Calendar, User, Train as TrainIcon, Ban } from 'lucide-react';
+import { Filter, Calendar, Train as TrainIcon, Ban } from 'lucide-react';
 
 const ManageBookings = () => {
     const [bookings, setBookings] = useState([]);
@@ -33,7 +33,7 @@ const ManageBookings = () => {
     const handleCancel = async (id) => {
         const result = await Swal.fire({
             title: 'Cancel Booking?',
-            text: "This will restore the seats and issue a 90% refund.",
+            text: "This will restore seats and issue a 90% refund.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -57,32 +57,36 @@ const ManageBookings = () => {
         return matchesStatus && matchesTrain;
     });
 
-    if (loading) return <div className="flex justify-center items-center h-full text-2xl font-bold">Auditing Bookings...</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-64">
+            <div className="w-8 h-8 border-3 border-railway-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
+        <div className="space-y-4">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 gap-3">
                 <div>
-                    <h1 className="text-2xl font-black text-gray-900 tracking-tight uppercase">Booking Ledger</h1>
-                    <p className="text-gray-500 font-bold text-sm">Managing all reservations across the system</p>
+                    <h1 className="text-base font-black text-railway-dark tracking-tight uppercase">Booking Ledger</h1>
+                    <p className="text-railway-silver text-xs font-medium">{bookings.length} total reservations</p>
                 </div>
-                <div className="flex flex-wrap gap-3 w-full lg:w-auto">
+                <div className="flex flex-wrap gap-2 w-full lg:w-auto">
                     <div className="relative flex-grow lg:flex-none">
-                        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
                         <select 
-                            className="pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-railway-blue outline-none bg-white font-bold text-gray-700 min-w-[150px] appearance-none"
+                            className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-gray-600 text-sm min-w-[130px]"
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
                         >
-                            <option value="ALL">Status: All</option>
+                            <option value="ALL">All Status</option>
                             <option value="BOOKED">Booked</option>
                             <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
                     <div className="relative flex-grow lg:flex-none">
-                        <TrainIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                        <TrainIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
                         <select 
-                            className="pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-railway-blue outline-none bg-white font-bold text-gray-700 min-w-[200px] appearance-none"
+                            className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-gray-600 text-sm min-w-[160px]"
                             value={filterTrain}
                             onChange={(e) => setFilterTrain(e.target.value)}
                         >
@@ -93,62 +97,61 @@ const ManageBookings = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-100">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest">Reference</th>
-                            <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest">Passenger</th>
-                            <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest">Voyage Details</th>
-                            <th className="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest">Financials</th>
-                            <th className="px-6 py-4 text-right text-xs font-black text-gray-500 uppercase tracking-widest">Control</th>
+                            <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Ref</th>
+                            <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Passenger</th>
+                            <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Journey</th>
+                            <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Amount</th>
+                            <th className="px-4 py-3 text-right text-[10px] font-bold text-railway-silver uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-50">
                         {filteredBookings.map((book) => (
                             <tr key={book.id} className="hover:bg-gray-50/50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="font-black text-gray-900 tracking-tighter">BK-{book.id.toString().padStart(4, '0')}</div>
-                                    <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">ID: #{book.id}</div>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="font-bold text-railway-dark text-sm">BK-{book.id.toString().padStart(4, '0')}</div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-railway-blue font-black text-xs uppercase">
-                                            {book.user.fullname.charAt(0)}
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-7 h-7 rounded-full bg-railway-primary/10 flex items-center justify-center">
+                                            <span className="text-[10px] font-bold text-railway-primary">{book.user.fullname.charAt(0)}</span>
                                         </div>
                                         <div>
-                                            <div className="text-sm font-bold text-gray-900">{book.user.fullname}</div>
-                                            <div className="text-[10px] text-gray-400 font-bold">{book.user.email}</div>
+                                            <div className="text-sm font-semibold text-railway-dark">{book.user.fullname}</div>
+                                            <div className="text-[10px] text-gray-400">{book.user.email}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center space-x-2 text-sm font-black text-gray-700">
-                                        <TrainIcon size={14} className="text-gray-400" />
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="flex items-center space-x-1.5 text-sm font-semibold text-gray-700">
+                                        <TrainIcon size={12} className="text-gray-300" />
                                         <span>{book.train.name}</span>
                                     </div>
-                                    <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
-                                        <Calendar size={12} className="text-gray-400" />
-                                        <span className="font-bold tracking-tight">{book.travelDate || 'Date N/A'}</span>
+                                    <div className="flex items-center space-x-1.5 text-[10px] text-gray-400 mt-0.5">
+                                        <Calendar size={10} className="text-gray-300" />
+                                        <span className="font-medium">{book.travelDate || 'N/A'}</span>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm font-black text-railway-blue uppercase tracking-tighter">₹{book.totalPrice}</div>
-                                    <div className={`mt-1 inline-block px-3 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase ${book.status === 'BOOKED' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="text-sm font-bold text-railway-primary">₹{book.totalPrice}</div>
+                                    <span className={`inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${book.status === 'BOOKED' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-500 border border-red-100'}`}>
                                         {book.status}
-                                    </div>
+                                    </span>
                                     {book.status === 'CANCELLED' && book.refundAmount && (
-                                        <div className="text-[10px] font-bold text-orange-500 mt-1">Refunded: ₹{book.refundAmount}</div>
+                                        <div className="text-[10px] font-medium text-amber-500 mt-0.5">Refund: ₹{book.refundAmount}</div>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right">
+                                <td className="px-4 py-3 whitespace-nowrap text-right">
                                     {book.status === 'BOOKED' && (
                                         <button 
                                             onClick={() => handleCancel(book.id)}
-                                            className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded-lg transition-all border border-red-100 hover:border-red-500 group"
-                                            title="Cancel Booking"
+                                            className="text-red-500 hover:text-white hover:bg-red-500 p-1.5 rounded-lg transition-all border border-red-100 hover:border-red-500"
+                                            title="Cancel"
                                         >
-                                            <Ban size={18} />
+                                            <Ban size={14} />
                                         </button>
                                     )}
                                 </td>
@@ -157,9 +160,7 @@ const ManageBookings = () => {
                     </tbody>
                 </table>
                 {filteredBookings.length === 0 && (
-                    <div className="p-16 text-center text-gray-300 font-black italic text-2xl uppercase tracking-[0.2em] bg-gray-50/20">
-                        No Records Found
-                    </div>
+                    <div className="p-12 text-center text-railway-silver text-sm font-medium">No records found</div>
                 )}
             </div>
         </div>

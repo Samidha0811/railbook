@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/api';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Users, Train, Ticket, Activity } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -21,23 +21,26 @@ const AdminDashboard = () => {
         fetchStats();
     }, []);
 
-    if (loading) return <div className="flex justify-center items-center h-screen">Loading Stats...</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-64">
+            <div className="w-8 h-8 border-3 border-railway-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
 
     if (!stats) return (
-        <div className="p-8 text-center bg-red-50 text-red-600 rounded-2xl border border-red-100">
-            <h2 className="text-xl font-bold">Failed to load system metrics</h2>
-            <p className="mt-2 text-sm font-medium">Please verify the backend connection and CORS settings.</p>
+        <div className="p-5 text-center bg-red-50 text-red-600 rounded-xl border border-red-100">
+            <h2 className="text-base font-bold">Failed to load metrics</h2>
+            <p className="mt-1 text-xs font-medium">Check backend connection.</p>
         </div>
     );
 
     const cards = [
-        { title: 'Total Users', value: stats.totalUsers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-        { title: 'Total Trains', value: stats.totalTrains, icon: Train, color: 'text-purple-600', bg: 'bg-purple-50' },
-        { title: 'Total Bookings', value: stats.totalBookings, icon: Ticket, color: 'text-green-600', bg: 'bg-green-50' },
-        { title: 'Active Bookings', value: stats.activeBookings, icon: Activity, color: 'text-orange-600', bg: 'bg-orange-50' },
+        { title: 'Users', value: stats.totalUsers, icon: Users, color: 'text-railway-primary', bg: 'bg-railway-primary/10', border: 'border-railway-primary/10' },
+        { title: 'Trains', value: stats.totalTrains, icon: Train, color: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-100' },
+        { title: 'Bookings', value: stats.totalBookings, icon: Ticket, color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100' },
+        { title: 'Active', value: stats.activeBookings, icon: Activity, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-100' },
     ];
 
-    // Mock data for charts
     const chartData = [
         { name: 'Mon', bookings: 12 },
         { name: 'Tue', bookings: 19 },
@@ -49,62 +52,63 @@ const AdminDashboard = () => {
     ];
 
     return (
-        <div className="space-y-8">
-            <h1 className="text-3xl font-black text-gray-900 tracking-tight uppercase border-l-8 border-railway-blue pl-4">
-                System Overview
+        <div className="space-y-5">
+            <h1 className="text-lg font-black text-railway-dark tracking-tight uppercase flex items-center space-x-2">
+                <div className="w-1 h-5 bg-railway-primary rounded-full"></div>
+                <span>System Overview</span>
             </h1>
 
             {/* Metric Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {cards.map((card) => (
-                    <div key={card.title} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div key={card.title} className={`bg-white p-4 rounded-xl shadow-sm border ${card.border} hover:shadow-md transition-shadow`}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">{card.title}</p>
-                                <p className="text-3xl font-black text-gray-900 mt-1">{card.value}</p>
+                                <p className="text-[10px] font-bold text-railway-silver uppercase tracking-wider">{card.title}</p>
+                                <p className="text-2xl font-black text-railway-dark mt-0.5">{card.value}</p>
                             </div>
-                            <div className={`${card.bg} p-4 rounded-xl`}>
-                                <card.icon className={card.color} size={24} />
+                            <div className={`${card.bg} p-2.5 rounded-lg`}>
+                                <card.icon className={card.color} size={18} />
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 className="text-xl font-bold text-gray-800 mb-6">Weekly Booking Trend</h2>
-                    <div className="h-80">
+            {/* Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="text-sm font-bold text-railway-dark mb-4">Weekly Bookings</h2>
+                    <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                <XAxis dataKey="name" />
-                                <YAxis />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                                <YAxis tick={{ fontSize: 11 }} />
                                 <Tooltip 
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: '12px' }}
                                 />
-                                <Bar dataKey="bookings" fill="#2563eb" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="bookings" fill="#059669" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 className="text-xl font-bold text-gray-800 mb-6">Recent Activity</h2>
-                    <div className="space-y-4">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="text-sm font-bold text-railway-dark mb-4">Recent Activity</h2>
+                    <div className="space-y-2">
                         {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                                <div className="flex items-center space-x-4">
-                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-                                        <Ticket size={18} className="text-railway-blue" />
+                            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                                        <Ticket size={14} className="text-railway-primary" />
                                     </div>
                                     <div>
-                                        <p className="font-bold text-gray-900">New Booking #00{i}</p>
-                                        <p className="text-sm text-gray-500">2 minutes ago</p>
+                                        <p className="font-semibold text-railway-dark text-sm">Booking #00{i}</p>
+                                        <p className="text-[10px] text-railway-silver">{i} min ago</p>
                                     </div>
                                 </div>
-                                <span className="text-xs font-black text-green-600 bg-green-100 px-3 py-1 rounded-full uppercase">Success</span>
+                                <span className="text-[10px] font-bold text-green-600 bg-green-50 border border-green-100 px-2 py-0.5 rounded-full uppercase">Confirmed</span>
                             </div>
                         ))}
                     </div>

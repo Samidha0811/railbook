@@ -2,31 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@layer base {
+  :root {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #f0f4f8;
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+  }
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #94a3b8;
+    border-radius: 20px;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    color: #0f172a;
+    background-color: #f8fafc;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  #root {
+    width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+  }
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  color: #1a202c;
-  background-color: #f7fafc;
+/* Global focus styles */
+*:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-#root {
-  width: 100%;
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, #059669, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dark panel inputs - override default colors */
+.dark-panel input,
+.dark-panel select {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.dark-panel input::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.dark-panel input:focus {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+}
+
+.dark-panel input[type="date"] {
+  color-scheme: dark;
+}
+
+.dark-panel input[type="date"]:focus {
+  color-scheme: light;
+}
+
+/* SweetAlert2 theme */
+.swal2-confirm {
+  background-color: #059669 !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #10b981 !important;
 }

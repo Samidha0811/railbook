@@ -28,7 +28,8 @@ export const trainService = {
 };
 
 export const bookingService = {
-    book: (trainId, seats, travelDate) => api.post('/bookings', { trainId, seats, travelDate }),
+    book: (trainId, seats, travelDate, passengerName, passengerContact) => 
+        api.post('/bookings', { trainId, seats, travelDate, passengerName, passengerContact }),
     getMyBookings: () => api.get('/bookings/my'),
     getAllBookings: () => api.get('/bookings/all'),
     cancel: (id) => api.post(`/bookings/${id}/cancel`),

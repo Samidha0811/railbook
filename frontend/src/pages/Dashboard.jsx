@@ -1,10 +1,16 @@
+import React, { useState, useEffect } from 'react';
 import { bookingService } from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Ticket, Search, ArrowRight } from 'lucide-react';
 
 const Dashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState({ text: '', type: '' });
+    const [sortBy, setSortBy] = useState('date_desc');
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     const fetchBookings = async () => {
         setLoading(true);
@@ -25,17 +31,18 @@ const Dashboard = () => {
     const handleCancel = async (bookingId) => {
         const result = await Swal.fire({
             title: 'Cancel Booking?',
-            text: "You will receive a partial refund.",
+            text: "A partial refund will be processed to your source account.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: 'Yes, cancel it!'
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No, keep it'
         });
 
         if (result.isConfirmed) {
             try {
                 await bookingService.cancel(bookingId);
-                Swal.fire('Cancelled!', 'Your booking has been removed.', 'success');
+                Swal.fire('Cancelled!', 'Your booking has been cancelled.', 'success');
                 fetchBookings();
             } catch (err) {
                 Swal.fire('Error', 'Cancellation failed', 'error');
@@ -43,74 +50,178 @@ const Dashboard = () => {
         }
     };
 
+    const sortedBookings = [...bookings].sort((a, b) => {
+        if (sortBy === 'date_desc') return new Date(b.travelDate) - new Date(a.travelDate);
+        if (sortBy === 'date_asc') return new Date(a.travelDate) - new Date(b.travelDate);
+        if (sortBy === 'price_desc') return b.totalPrice - a.totalPrice;
+        return 0;
+    });
+
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-8 border-b-4 border-railway-blue pb-2 inline-block">My Journey History</h1>
-
-            {message.text && (
-                <div className={`mb-6 p-4 rounded-lg text-center font-medium ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {message.text}
+        <div className="max-w-6xl mx-auto px-4 py-6">
+            {/* Welcome Section */}
+            <div className="bg-white rounded-xl p-5 mb-5 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="flex items-center space-x-4">
+                    <div className="h-12 w-12 rounded-xl bg-railway-primary/10 border border-railway-primary/20 flex items-center justify-center text-railway-primary-light text-lg font-black">
+                        {user?.fullname?.charAt(0)}
+                    </div>
+                    <div>
+                        <h2 className="text-lg font-black text-railway-dark tracking-tight">Welcome, {user?.fullname}!</h2>
+                        <p className="text-railway-silver text-xs font-medium">Manage your reservations below.</p>
+                    </div>
                 </div>
-            )}
+                <div className="flex space-x-3">
+                    <div className="text-center px-4 py-2 bg-railway-primary/5 border border-railway-primary/10 rounded-lg">
+                        <p className="text-[10px] font-bold text-railway-silver uppercase tracking-widest">Trips</p>
+                        <p className="text-xl font-black text-railway-primary">{bookings.length}</p>
+                    </div>
+                    <div className="text-center px-4 py-2 bg-green-50 border border-green-100 rounded-lg">
+                        <p className="text-[10px] font-bold text-railway-silver uppercase tracking-widest">Active</p>
+                        <p className="text-xl font-black text-green-600">
+                            {bookings.filter(b => b.status === 'BOOKED').length}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-            <div className="bg-white shadow overflow-hidden sm:rounded-md border border-gray-200">
-                {loading ? (
-                    <div className="p-10 text-center text-gray-500">Retrieving your bookings...</div>
-                ) : bookings.length > 0 ? (
-                    <ul className="divide-y divide-gray-200">
-                        {bookings.map((booking) => (
-                            <li key={booking.id}>
-                                <div className="px-6 py-5 flex items-center justify-between">
-                                    <div className="flex-grow">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <p className="text-lg font-bold text-railway-blue uppercase">
-                                                {booking.train.name} <span className="text-gray-400 font-medium ml-2">#{booking.train.trainNumber}</span>
-                                            </p>
-                                            <div className="ml-2 flex-shrink-0 flex">
-                                                <p className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.status === 'BOOKED' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                {/* Bookings List */}
+                <div className="lg:col-span-2">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-black text-railway-dark uppercase tracking-wider flex items-center space-x-2">
+                            <Ticket size={16} className="text-railway-primary" />
+                            <span>Journey History</span>
+                        </h3>
+                        <select 
+                            className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs font-bold text-gray-600 outline-none focus:ring-1 focus:ring-railway-primary"
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                        >
+                            <option value="date_desc">Newest</option>
+                            <option value="date_asc">Oldest</option>
+                            <option value="price_desc">Highest Fare</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-3">
+                        {loading ? (
+                            <div className="text-center py-16 bg-white rounded-xl border border-gray-100 text-railway-silver text-sm font-medium">Loading bookings...</div>
+                        ) : sortedBookings.length > 0 ? (
+                            sortedBookings.map((booking) => (
+                                <div key={booking.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                                    <div className="p-4">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="bg-railway-primary/10 p-2 rounded-lg">
+                                                    <Ticket size={16} className="text-railway-primary" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-black text-railway-dark uppercase">{booking.train.name}</h4>
+                                                    <p className="text-[10px] font-bold text-railway-silver uppercase tracking-wider">#{booking.train.trainNumber}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${booking.status === 'BOOKED' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-500 border border-red-100'}`}>
                                                     {booking.status}
-                                                </p>
+                                                </span>
+                                                <p className="mt-1 text-lg font-black text-railway-dark">₹{booking.totalPrice}</p>
                                             </div>
                                         </div>
-                                        <div className="sm:flex sm:justify-between text-sm text-gray-500">
-                                            <div className="flex items-center space-x-4">
-                                                <span className="flex items-center">
-                                                    <svg className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                                    {booking.train.source} → {booking.train.destination}
-                                                </span>
-                                                <span className="flex items-center">
-                                                    <svg className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                                    Travel Date: <span className="font-bold ml-1 text-gray-700">{booking.travelDate}</span>
-                                                </span>
+
+                                        <div className="flex flex-wrap gap-4 py-2.5 border-t border-gray-50 mb-3 text-xs">
+                                            <div>
+                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Route</p>
+                                                <p className="font-bold text-railway-dark">{booking.train.source} → {booking.train.destination}</p>
                                             </div>
-                                            <div className="mt-2 sm:mt-0 font-bold text-gray-900">
-                                                {booking.seatsBooked} Ticket(s) - ₹{booking.totalPrice}
-                                                {booking.status === 'CANCELLED' && booking.refundAmount && (
-                                                    <span className="ml-2 text-orange-500 font-bold">(Refunded: ₹{booking.refundAmount})</span>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Date</p>
+                                                <p className="font-bold text-railway-primary">{booking.travelDate}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Passenger</p>
+                                                <p className="font-bold text-railway-dark">{booking.passengerName || user.fullname}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Seats</p>
+                                                <p className="font-bold text-railway-dark">{booking.seatsBooked}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-[10px] font-medium text-gray-300">
+                                                Booked: {new Date(booking.bookingDate).toLocaleDateString()}
+                                            </span>
+                                            <div className="flex space-x-2">
+                                                <button 
+                                                    onClick={() => navigate(`/train/${booking.train.id}`)}
+                                                    className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase text-railway-primary hover:bg-railway-primary/5 transition-colors"
+                                                >
+                                                    View Train
+                                                </button>
+                                                {booking.status === 'BOOKED' && (
+                                                    <button
+                                                        onClick={() => handleCancel(booking.id)}
+                                                        className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                                                    >
+                                                        Cancel
+                                                    </button>
                                                 )}
                                             </div>
                                         </div>
                                     </div>
-                                    {booking.status === 'BOOKED' && (
-                                        <div className="ml-6 flex-shrink-0">
-                                            <button
-                                                onClick={() => handleCancel(booking.id)}
-                                                className="bg-white border border-red-500 text-red-600 hover:bg-red-50 px-4 py-2 rounded-md text-sm font-bold transition-all"
-                                            >
-                                                CANCEL
-                                            </button>
+                                    {booking.status === 'CANCELLED' && booking.refundAmount && (
+                                        <div className="bg-amber-50 px-4 py-1.5 border-t border-amber-100 text-[10px] font-bold text-amber-600 uppercase tracking-wider text-center">
+                                            Refund of ₹{booking.refundAmount} credited
                                         </div>
                                     )}
                                 </div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <div className="text-center py-16">
-                        <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                        <p className="mt-4 text-gray-500 font-medium">No bookings found. Time to plan a trip!</p>
+                            ))
+                        ) : (
+                            <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
+                                <Ticket size={28} className="mx-auto text-gray-200 mb-2" />
+                                <p className="text-sm font-bold text-gray-400">No bookings yet.</p>
+                                <Link to="/home" className="text-railway-primary font-bold uppercase text-xs hover:underline mt-1 inline-block">Book Your First Trip</Link>
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
+
+                {/* Quick Search Widget */}
+                <div>
+                    <div className="dark-panel bg-gradient-to-b from-railway-dark to-railway-muted rounded-xl p-5 text-white shadow-lg sticky top-20 border border-white/5">
+                        <div className="flex items-center space-x-2 mb-3">
+                            <Search size={16} className="text-railway-primary-light" />
+                            <h3 className="text-sm font-black uppercase tracking-wider">Quick Search</h3>
+                        </div>
+                        <p className="text-railway-silver text-xs mb-4">Find trains for your next journey.</p>
+                        
+                        <form onSubmit={(e) => { e.preventDefault(); navigate('/home'); }} className="space-y-3">
+                            <div>
+                                <label className="block text-[10px] font-bold uppercase text-railway-silver mb-1">From</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Source Station"
+                                    className="w-full border border-white/20 rounded-lg px-3 py-2 text-sm font-medium outline-none transition-all"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold uppercase text-railway-silver mb-1">To</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="Destination Station"
+                                    className="w-full border border-white/20 rounded-lg px-3 py-2 text-sm font-medium outline-none transition-all"
+                                />
+                            </div>
+                            <button 
+                                type="submit"
+                                className="w-full bg-railway-primary text-white font-bold py-2.5 rounded-lg uppercase tracking-wider text-xs shadow-md hover:bg-railway-primary-light transition-all active:scale-95 mt-1 flex items-center justify-center space-x-2"
+                            >
+                                <span>Search Now</span>
+                                <ArrowRight size={14} />
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     );

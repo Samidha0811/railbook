@@ -72,6 +72,7 @@ const ManageTrains = () => {
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Save Train',
+            confirmButtonColor: '#059669',
             width: '600px',
             preConfirm: () => {
                 const trainNumber = document.getElementById('swal-input1').value;
@@ -142,83 +143,79 @@ const ManageTrains = () => {
     );
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
+        <div className="space-y-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 gap-3">
                 <div>
-                    <h1 className="text-2xl font-black text-gray-900 tracking-tight uppercase">Train Management</h1>
-                    <p className="text-gray-500 font-bold text-sm">Managing {trains.length} active trains</p>
+                    <h1 className="text-base font-black text-railway-dark tracking-tight uppercase">Train Management</h1>
+                    <p className="text-railway-silver text-xs font-medium">{trains.length} trains in fleet</p>
                 </div>
-                <div className="flex w-full md:w-auto space-x-3">
+                <div className="flex w-full md:w-auto space-x-2">
                     <div className="relative flex-grow">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
                         <input 
                             type="text" 
-                            placeholder="Search by name, number, route..." 
-                            className="pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-railway-blue outline-none w-full md:w-80 font-medium"
+                            placeholder="Search trains..." 
+                            className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none w-full md:w-64 text-sm font-medium"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <button 
                         onClick={() => handleAddEdit()}
-                        className="bg-railway-blue text-white px-6 py-2 rounded-xl font-black flex items-center space-x-2 hover:bg-railway-dark transition-all shadow-lg hover:shadow-railway-blue/20"
+                        className="bg-railway-primary text-white px-4 py-2 rounded-lg font-bold flex items-center space-x-1.5 hover:bg-railway-primary-light transition-all shadow-sm text-sm whitespace-nowrap"
                     >
-                        <Plus size={20} />
-                        <span className="hidden md:inline">ADD TRAIN</span>
+                        <Plus size={16} />
+                        <span className="hidden md:inline">Add</span>
                     </button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {filteredTrains.map((train) => (
-                    <div key={train.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all group">
-                        <div className="flex justify-between items-start mb-4">
+                    <div key={train.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all group">
+                        <div className="flex justify-between items-start mb-3">
                             <div>
-                                <span className="bg-railway-blue/10 text-railway-blue px-3 py-1 rounded-full text-xs font-black tracking-widest uppercase">#{train.trainNumber}</span>
-                                <h3 className="text-xl font-black text-gray-900 mt-2">{train.name}</h3>
+                                <span className="bg-railway-primary/10 text-railway-primary px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">#{train.trainNumber}</span>
+                                <h3 className="text-base font-black text-railway-dark mt-1">{train.name}</h3>
                             </div>
-                            <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onClick={() => handleAddEdit(train)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"><Edit size={18} /></button>
-                                <button onClick={() => handleDelete(train.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={18} /></button>
+                            <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onClick={() => handleAddEdit(train)} className="p-1.5 text-railway-primary hover:bg-railway-primary/5 rounded-lg"><Edit size={14} /></button>
+                                <button onClick={() => handleDelete(train.id)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg"><Trash2 size={14} /></button>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6 mb-6">
-                            <div className="space-y-3">
-                                <div className="flex items-center space-x-3 text-gray-600">
-                                    <MapPin size={18} className="text-gray-400" />
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter leading-none mb-1">Route</p>
-                                        <p className="font-bold text-sm">{train.source} → {train.destination}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center space-x-3 text-gray-600">
-                                    <Clock size={18} className="text-gray-400" />
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter leading-none mb-1">Departure</p>
-                                        <p className="font-bold text-sm tracking-tight">{train.departureTime}</p>
-                                    </div>
+                        <div className="grid grid-cols-2 gap-3 mb-3 text-xs">
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <MapPin size={12} className="text-gray-300 flex-shrink-0" />
+                                <div>
+                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Route</p>
+                                    <p className="font-semibold">{train.source} → {train.destination}</p>
                                 </div>
                             </div>
-                            <div className="space-y-3">
-                                <div className="flex items-center space-x-3 text-gray-600">
-                                    <Armchair size={18} className="text-gray-400" />
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter leading-none mb-1">Capacity</p>
-                                        <p className="font-bold text-sm">{train.availableSeats} / {train.totalSeats} Seats</p>
-                                    </div>
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <Clock size={12} className="text-gray-300 flex-shrink-0" />
+                                <div>
+                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Time</p>
+                                    <p className="font-semibold">{train.departureTime}</p>
                                 </div>
-                                <div className="flex items-center space-x-3 text-gray-600">
-                                    <div className="w-[18px] text-center font-black text-gray-400 text-sm">₹</div>
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter leading-none mb-1">Base Price</p>
-                                        <p className="font-black text-sm text-railway-blue tracking-tight">₹{train.price}</p>
-                                    </div>
+                            </div>
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <Armchair size={12} className="text-gray-300 flex-shrink-0" />
+                                <div>
+                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Seats</p>
+                                    <p className="font-semibold">{train.availableSeats}/{train.totalSeats}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <span className="text-gray-300 font-bold text-xs flex-shrink-0">₹</span>
+                                <div>
+                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Price</p>
+                                    <p className="font-bold text-railway-primary">₹{train.price}</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                        <div className="w-full bg-gray-100 h-1 rounded-full overflow-hidden">
                             <div 
                                 className={`h-full transition-all duration-500 ${train.availableSeats / train.totalSeats < 0.2 ? 'bg-red-500' : 'bg-green-500'}`}
                                 style={{ width: `${(train.availableSeats / train.totalSeats) * 100}%` }}
@@ -229,9 +226,9 @@ const ManageTrains = () => {
             </div>
             
             {!loading && filteredTrains.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
-                    <Train size={64} className="text-gray-200 mb-4" />
-                    <p className="text-gray-400 font-bold text-xl uppercase tracking-widest">Initial Fleet Not Found</p>
+                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
+                    <Search size={32} className="text-gray-200 mb-2" />
+                    <p className="text-gray-400 font-bold text-sm">No trains found</p>
                 </div>
             )}
         </div>

@@ -3,11 +3,13 @@ import { authService, trainService, bookingService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Search, MapPin, Calendar, ArrowRight } from 'lucide-react';
 
 const Home = () => {
     const [trains, setTrains] = useState([]);
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
+    const [travelDate, setTravelDate] = useState('');
     const [loading, setLoading] = useState(false);
     const [bookingLoading, setBookingLoading] = useState(null);
     const [message, setMessage] = useState({ text: '', type: '' });
@@ -47,8 +49,16 @@ const Home = () => {
             html: `
                 <div class="space-y-4">
                     <div class="text-left">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Passenger Name</label>
+                        <input type="text" id="passenger-name" class="swal2-input !w-full !m-0" value="${user.fullname}">
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Contact Number</label>
+                        <input type="text" id="passenger-contact" class="swal2-input !w-full !m-0" placeholder="10 digit number">
+                    </div>
+                    <div class="text-left">
                         <label class="block text-sm font-bold text-gray-700 mb-1">Travel Date</label>
-                        <input type="date" id="travel-date" class="swal2-input !w-full !m-0" min="${new Date().toISOString().split('T')[0]}">
+                        <input type="date" id="travel-date" class="swal2-input !w-full !m-0" value="${travelDate}" min="${new Date().toISOString().split('T')[0]}">
                     </div>
                     <div class="text-left mt-4">
                         <label class="block text-sm font-bold text-gray-700 mb-1">Seats Count</label>
@@ -59,27 +69,42 @@ const Home = () => {
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Book Tickets',
+            confirmButtonColor: '#059669',
             preConfirm: () => {
-                const travelDate = document.getElementById('travel-date').value;
+                const pName = document.getElementById('passenger-name').value;
+                const pContact = document.getElementById('passenger-contact').value;
+                const tDate = document.getElementById('travel-date').value;
                 const seats = document.getElementById('seats-count').value;
-                if (!travelDate || !seats) {
-                    Swal.showValidationMessage('Please select a date and seat count');
+                if (!pName || !tDate || !seats) {
+                    Swal.showValidationMessage('Please fill all required fields');
                     return false;
                 }
-                return { travelDate, seats: parseInt(seats) };
+                return { 
+                    passengerName: pName, 
+                    passengerContact: pContact, 
+                    travelDate: tDate, 
+                    seats: parseInt(seats) 
+                };
             }
         });
 
         if (formValues) {
             setBookingLoading(trainId);
             try {
-                await bookingService.book(trainId, formValues.seats, formValues.travelDate);
+                await bookingService.book(
+                    trainId, 
+                    formValues.seats, 
+                    formValues.travelDate, 
+                    formValues.passengerName, 
+                    formValues.passengerContact
+                );
                 Swal.fire({
                     title: 'Journey Confirmed!',
                     text: 'Your ticket has been booked successfully.',
                     icon: 'success',
                     timer: 2000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    confirmButtonColor: '#059669'
                 });
                 fetchTrains();
             } catch (err) {
@@ -95,85 +120,119 @@ const Home = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-railway-blue rounded-xl p-8 mb-8 text-white shadow-xl">
-                <h1 className="text-4xl font-bold mb-4">Search & Book Your Journey</h1>
-                <p className="text-railway-silver mb-6">Enter your source and destination to find available trains.</p>
+        <div className="max-w-6xl mx-auto px-4 py-6">
+            {/* Search Section */}
+            <div className="dark-panel bg-gradient-to-r from-railway-dark to-railway-muted rounded-xl p-6 mb-6 text-white shadow-xl border border-white/5">
+                <div className="flex items-center space-x-2 mb-1">
+                    <Search size={18} className="text-railway-primary-light" />
+                    <h1 className="text-xl font-black uppercase tracking-tight">Find Your Train</h1>
+                </div>
+                <p className="text-railway-silver text-xs mb-4 font-medium">Search routes and book your journey in seconds.</p>
                 
-                <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <input
-                        type="text"
-                        placeholder="From: Departure Station"
-                        className="p-3 rounded-lg text-gray-900 focus:ring-2 focus:ring-railway-silver outline-none"
-                        value={source}
-                        onChange={(e) => setSource(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="To: Arrival Station"
-                        className="p-3 rounded-lg text-gray-900 focus:ring-2 focus:ring-railway-silver outline-none"
-                        value={destination}
-                        onChange={(e) => setDestination(e.target.value)}
-                    />
+                <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div className="relative">
+                        <MapPin size={14} className="absolute left-3 top-3 text-white/30" />
+                        <input
+                            type="text"
+                            placeholder="From Station"
+                            className="w-full p-2.5 pl-9 rounded-lg border border-white/20 text-sm font-medium outline-none transition-all"
+                            value={source}
+                            onChange={(e) => setSource(e.target.value)}
+                        />
+                    </div>
+                    <div className="relative">
+                        <MapPin size={14} className="absolute left-3 top-3 text-white/30" />
+                        <input
+                            type="text"
+                            placeholder="To Station"
+                            className="w-full p-2.5 pl-9 rounded-lg border border-white/20 text-sm font-medium outline-none transition-all"
+                            value={destination}
+                            onChange={(e) => setDestination(e.target.value)}
+                        />
+                    </div>
+                    <div className="relative">
+                        <Calendar size={14} className="absolute left-3 top-3 text-white/30" />
+                        <input
+                            type="date"
+                            className="w-full p-2.5 pl-9 rounded-lg border border-white/20 text-sm font-medium outline-none transition-all"
+                            value={travelDate}
+                            onChange={(e) => setTravelDate(e.target.value)}
+                            min={new Date().toISOString().split('T')[0]}
+                        />
+                    </div>
                     <button
                         type="submit"
-                        className="bg-railway-silver text-railway-blue font-bold px-6 py-3 rounded-lg hover:bg-white transition-colors uppercase tracking-wider"
+                        className="bg-railway-primary text-white font-bold px-5 py-2.5 rounded-lg hover:bg-railway-primary-light transition-all text-sm uppercase tracking-wider shadow-lg shadow-railway-primary/20 active:scale-95"
                     >
-                        Search Trains
+                        Search
                     </button>
                 </form>
             </div>
 
             {message.text && (
-                <div className={`mb-6 p-4 rounded-lg text-center font-medium ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <div className={`mb-4 p-3 rounded-lg text-center text-sm font-medium ${message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
                     {message.text}
                 </div>
             )}
 
-            <div className="grid grid-cols-1 gap-6">
+            {/* Train Results */}
+            <div className="space-y-3">
                 {loading ? (
-                    <p className="text-center text-gray-600">Loading trains...</p>
+                    <div className="flex justify-center py-16">
+                        <div className="w-10 h-10 border-3 border-railway-primary border-t-transparent rounded-full animate-spin"></div>
+                    </div>
                 ) : trains.length > 0 ? (
                     trains.map((train) => (
-                        <div key={train.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 overflow-hidden flex flex-col md:flex-row">
-                            <div className="bg-gray-50 p-6 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-gray-200 md:w-48">
-                                <span className="text-2xl font-bold text-railway-blue">{train.trainNumber}</span>
-                                <span className="text-xs uppercase tracking-widest text-gray-500 font-bold mt-1">Express</span>
+                        <div key={train.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 overflow-hidden flex flex-col md:flex-row group">
+                            <div className="bg-railway-dark/5 p-4 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-gray-100 md:w-36">
+                                <span className="text-xl font-black text-railway-primary tracking-tight">#{train.trainNumber}</span>
+                                <span className="text-[9px] uppercase tracking-widest text-railway-silver font-bold mt-0.5">Express</span>
                             </div>
-                            <div className="p-6 flex-grow grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                            <div className="p-4 flex-grow grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                                 <div className="md:col-span-2">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1">{train.name}</h3>
-                                    <div className="flex items-center text-sm text-gray-600 font-medium">
-                                        <span className="text-railway-blue">{train.source}</span>
-                                        <svg className="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                                        <span className="text-railway-blue">{train.destination}</span>
+                                    <h3 className="text-base font-black text-railway-dark uppercase tracking-tight mb-1">{train.name}</h3>
+                                    <div className="flex items-center text-xs font-bold">
+                                        <span className="text-railway-primary uppercase">{train.source}</span>
+                                        <div className="mx-3 flex items-center">
+                                            <div className="h-px w-8 bg-gray-200"></div>
+                                            <ArrowRight size={10} className="text-gray-300 -ml-1" />
+                                        </div>
+                                        <span className="text-railway-primary uppercase">{train.destination}</span>
                                     </div>
-                                    <div className="mt-2 text-xs text-gray-400">Departure: {train.departureTime}</div>
+                                    <div className="mt-1.5 flex items-center space-x-3 text-[10px] font-bold text-railway-silver uppercase tracking-widest">
+                                        <span>Dep: <span className="text-railway-dark">{train.departureTime}</span></span>
+                                        <span>Arr: <span className="text-railway-dark">{train.arrivalTime}</span></span>
+                                    </div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-sm font-bold text-gray-500 uppercase mb-1">Available</div>
-                                    <div className={`text-2xl font-black ${train.availableSeats > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {train.availableSeats} <span className="text-xs">/ {train.totalSeats}</span>
+                                    <div className="text-[10px] font-bold text-railway-silver uppercase tracking-widest mb-0.5">Seats</div>
+                                    <div className={`text-2xl font-black ${train.availableSeats > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                                        {train.availableSeats}
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <div className="text-sm font-bold text-gray-500 uppercase mb-1">Fare</div>
-                                    <div className="text-2xl font-black text-railway-blue mb-3">₹{train.price}</div>
+                                <div className="flex flex-col space-y-1.5">
                                     <button
                                         onClick={() => handleBook(train.id)}
                                         disabled={train.availableSeats === 0 || bookingLoading === train.id}
-                                        className={`w-full px-4 py-2 rounded-md font-bold transition-all ${train.availableSeats > 0 ? 'bg-railway-blue text-white hover:bg-railway-dark' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                                        className={`w-full px-3 py-2 rounded-lg font-bold text-xs uppercase transition-all ${train.availableSeats > 0 ? 'bg-railway-primary text-white hover:bg-railway-primary-light shadow-sm' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
                                     >
-                                        {bookingLoading === train.id ? 'Booking...' : train.availableSeats > 0 ? 'BOOK NOW' : 'SOLD OUT'}
+                                        {bookingLoading === train.id ? 'Booking...' : train.availableSeats > 0 ? 'Book Now' : 'Sold Out'}
+                                    </button>
+                                    <button
+                                        onClick={() => navigate(`/train/${train.id}`)}
+                                        className="w-full px-3 py-2 rounded-lg font-bold text-xs uppercase border border-railway-primary/30 text-railway-primary hover:bg-railway-primary/5 transition-all"
+                                    >
+                                        Details
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <div className="text-center py-20 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300">
-                        <p className="text-xl text-gray-500">No trains found for this route.</p>
-                        <button onClick={() => { setSource(''); setDestination(''); fetchTrains(); }} className="mt-4 text-railway-blue font-bold hover:underline">View All Trains</button>
+                    <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
+                        <Search size={32} className="mx-auto text-gray-200 mb-3" />
+                        <p className="text-sm font-bold text-gray-400">No trains found for this route.</p>
+                        <button onClick={() => { setSource(''); setDestination(''); fetchTrains(); }} className="text-railway-primary font-bold text-xs uppercase hover:underline mt-1">Clear Filters</button>
                     </div>
                 )}
             </div>
