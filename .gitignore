@@ -6,6 +6,7 @@ backend/.classpath
 backend/.settings/
 backend/.factorypath
 backend/.mvn/wrapper/maven-wrapper.jar
+backend/src/main/resources/application.properties
 *.jar
 *.war
 *.ear
@@ -16,6 +17,8 @@ frontend/node_modules/
 frontend/dist/
 frontend/dist-ssr/
 frontend/*.local
+frontend/.env
+frontend/.env.*
 
 # --- Logs ---
 *.log
