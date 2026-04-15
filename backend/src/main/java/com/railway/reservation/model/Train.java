@@ -27,23 +27,30 @@ public class Train {
     private String departureTime;
 
     @Column(nullable = false)
+    private String arrivalTime;
+
+    @Column(nullable = false)
     private Integer totalSeats;
 
     @Column(nullable = false)
     private Integer availableSeats;
+
+    @OneToMany(mappedBy = "train", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<RouteStation> routeStations = new java.util.ArrayList<>();
 
     @Column(nullable = false)
     private BigDecimal price;
 
     public Train() {}
 
-    public Train(Long id, String trainNumber, String name, String source, String destination, String departureTime, Integer totalSeats, Integer availableSeats, BigDecimal price) {
+    public Train(Long id, String trainNumber, String name, String source, String destination, String departureTime, String arrivalTime, Integer totalSeats, Integer availableSeats, BigDecimal price) {
         this.id = id;
         this.trainNumber = trainNumber;
         this.name = name;
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
         this.totalSeats = totalSeats;
         this.availableSeats = availableSeats;
         this.price = price;
@@ -95,6 +102,22 @@ public class Train {
 
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public java.util.List<RouteStation> getRouteStations() {
+        return routeStations;
+    }
+
+    public void setRouteStations(java.util.List<RouteStation> routeStations) {
+        this.routeStations = routeStations;
     }
 
     public Integer getTotalSeats() {

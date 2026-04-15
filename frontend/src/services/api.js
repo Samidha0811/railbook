@@ -28,10 +28,18 @@ export const trainService = {
 };
 
 export const bookingService = {
-    book: (trainId, seats) => api.post('/bookings', { trainId, seats }),
+    book: (trainId, seats, travelDate, passengerName, passengerContact) => 
+        api.post('/bookings', { trainId, seats, travelDate, passengerName, passengerContact }),
     getMyBookings: () => api.get('/bookings/my'),
     getAllBookings: () => api.get('/bookings/all'),
     cancel: (id) => api.post(`/bookings/${id}/cancel`),
+};
+
+export const adminService = {
+    getStats: () => api.get('/admin/stats'),
+    getUsers: () => api.get('/admin/users'),
+    toggleUserBlock: (id) => api.put(`/admin/users/${id}/toggle-block`),
+    deleteUser: (id) => api.delete(`/admin/users/${id}`),
 };
 
 export default api;

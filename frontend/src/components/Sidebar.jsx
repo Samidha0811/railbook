@@ -1,0 +1,70 @@
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Train, Users, Ticket, LogOut, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+const Sidebar = () => {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const navItems = [
+        { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+        { name: 'Trains', path: '/admin/trains', icon: Train },
+        { name: 'Users', path: '/admin/users', icon: Users },
+        { name: 'Bookings', path: '/admin/bookings', icon: Ticket },
+    ];
+
+    return (
+        <div className="w-56 bg-railway-dark min-h-screen text-white flex flex-col border-r border-white/5">
+            <div className="p-4 border-b border-white/5">
+                <div className="flex items-center space-x-2">
+                    <div className="w-7 h-7 bg-railway-primary rounded-lg flex items-center justify-center">
+                        <Train size={14} className="text-white" />
+                    </div>
+                    <div>
+                        <h1 className="text-sm font-black text-white tracking-tight">RailBook</h1>
+                        <p className="text-[9px] text-railway-silver font-semibold uppercase tracking-wider">Admin Panel</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav className="flex-grow p-3 space-y-1 mt-2">
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) =>
+                            `flex items-center space-x-2.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                                isActive 
+                                ? 'bg-railway-primary text-white shadow-md shadow-railway-primary/20' 
+                                : 'text-railway-silver hover:bg-white/5 hover:text-white'
+                            }`
+                        }
+                    >
+                        <item.icon size={16} />
+                        <span>{item.name}</span>
+                    </NavLink>
+                ))}
+            </nav>
+
+            <div className="p-3 border-t border-white/5 space-y-1">
+                <button 
+                    onClick={() => navigate('/home')}
+                    className="flex items-center space-x-2.5 px-3 py-2 w-full text-railway-silver hover:bg-white/5 hover:text-white rounded-lg text-sm font-semibold transition-all"
+                >
+                    <ArrowLeft size={16} />
+                    <span>Back to Site</span>
+                </button>
+                <button 
+                    onClick={logout}
+                    className="flex items-center space-x-2.5 px-3 py-2 w-full text-red-400 hover:bg-red-500/10 rounded-lg text-sm font-semibold transition-all"
+                >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default Sidebar;

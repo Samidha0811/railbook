@@ -35,13 +35,14 @@ public class DataInitializer implements CommandLineRunner {
         admin.setEmail("admin@railway.com");
         admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setRole("ROLE_ADMIN");
+        admin.setEnabled(true);
         userRepository.save(admin);
 
         // Create Sample Trains
-        trainRepository.save(new Train(null, "12101", "Jnaneswari Express", "Mumbai", "Kolkata", "10:30 PM", 500, 500, new BigDecimal("850.00")));
-        trainRepository.save(new Train(null, "12267", "Duronto Express", "Mumbai", "Ahmedabad", "11:25 PM", 300, 300, new BigDecimal("650.00")));
-        trainRepository.save(new Train(null, "12951", "Rajdhani Express", "Mumbai", "Delhi", "04:40 PM", 800, 800, new BigDecimal("2100.00")));
-        trainRepository.save(new Train(null, "11019", "Konark Express", "Mumbai", "Bhubaneswar", "03:10 PM", 400, 400, new BigDecimal("1200.00")));
+        trainRepository.save(new Train(null, "12101", "Jnaneswari Express", "Mumbai", "Kolkata", "10:30 PM", "06:00 AM", 500, 500, new BigDecimal("850.00")));
+        trainRepository.save(new Train(null, "12267", "Duronto Express", "Mumbai", "Ahmedabad", "11:25 PM", "08:30 AM", 300, 300, new BigDecimal("650.00")));
+        trainRepository.save(new Train(null, "12951", "Rajdhani Express", "Mumbai", "Delhi", "04:40 PM", "09:10 AM", 800, 800, new BigDecimal("2100.00")));
+        trainRepository.save(new Train(null, "11019", "Konark Express", "Mumbai", "Bhubaneswar", "03:10 PM", "01:20 PM", 400, 400, new BigDecimal("1200.00")));
 
         System.out.println("Data Initialization Complete!");
     }

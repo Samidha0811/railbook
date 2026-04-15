@@ -67,12 +67,9 @@ public class AuthController {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
-        String role = signUpRequest.getRole();
-        if (role == null || role.isEmpty()) {
-            user.setRole("ROLE_USER");
-        } else {
-            user.setRole(role);
-        }
+        // Always set default role to ROLE_USER for new registrations
+        user.setRole("ROLE_USER");
+        user.setEnabled(true);
 
         userRepository.save(user);
 

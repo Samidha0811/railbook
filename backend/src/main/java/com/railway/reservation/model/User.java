@@ -22,6 +22,9 @@ public class User {
     @Column(nullable = false)
     private String role; // ROLE_USER, ROLE_ADMIN
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean enabled = true;
+
     public User() {}
 
     public User(Long id, String fullname, String email, String password, String role) {
@@ -70,5 +73,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
