@@ -7,6 +7,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLayout from './components/AdminLayout';
+import ManageTrains from './pages/ManageTrains';
+import ManageUsers from './pages/ManageUsers';
+import ManageBookings from './pages/ManageBookings';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading, isAdmin } = useAuth();
@@ -36,9 +40,15 @@ function App() {
               } />
               <Route path="/admin" element={
                 <ProtectedRoute adminOnly={true}>
-                  <AdminDashboard />
+                  <AdminLayout />
                 </ProtectedRoute>
-              } />
+              }>
+                <Route index element={<Navigate to="dashboard" replace />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="trains" element={<ManageTrains />} />
+                <Route path="users" element={<ManageUsers />} />
+                <Route path="bookings" element={<ManageBookings />} />
+              </Route>
             </Routes>
           </main>
           <footer className="bg-gray-800 text-white text-center py-4">

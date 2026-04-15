@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { bookingService } from '../services/api';
+import Swal from 'sweetalert2';
 
 const Dashboard = () => {
     const [bookings, setBookings] = useState([]);
@@ -23,16 +23,23 @@ const Dashboard = () => {
     }, []);
 
     const handleCancel = async (bookingId) => {
-        if (!window.confirm('Are you sure you want to cancel this booking?')) return;
+        const result = await Swal.fire({
+            title: 'Cancel Booking?',
+            text: "You will receive a partial refund.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        });
 
-        try {
-            await bookingService.cancel(bookingId);
-            setMessage({ text: 'Booking cancelled successfully.', type: 'success' });
-            fetchBookings();
-        } catch (err) {
-            setMessage({ text: 'Cancellation failed.', type: 'error' });
-        } finally {
-            setTimeout(() => setMessage({ text: '', type: '' }), 5000);
+        if (result.isConfirmed) {
+            try {
+                await bookingService.cancel(bookingId);
+                Swal.fire('Cancelled!', 'Your booking has been removed.', 'success');
+                fetchBookings();
+            } catch (err) {
+                Swal.fire('Error', 'Cancellation failed', 'error');
+            }
         }
     };
 
@@ -73,11 +80,14 @@ const Dashboard = () => {
                                                 </span>
                                                 <span className="flex items-center">
                                                     <svg className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                                    Booked on {new Date(booking.bookingDate).toLocaleDateString()}
+                                                    Travel Date: <span className="font-bold ml-1 text-gray-700">{booking.travelDate}</span>
                                                 </span>
                                             </div>
                                             <div className="mt-2 sm:mt-0 font-bold text-gray-900">
                                                 {booking.seatsBooked} Ticket(s) - ₹{booking.totalPrice}
+                                                {booking.status === 'CANCELLED' && booking.refundAmount && (
+                                                    <span className="ml-2 text-orange-500 font-bold">(Refunded: ₹{booking.refundAmount})</span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

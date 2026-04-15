@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { trainService, bookingService } from '../services/api';
+import { authService, trainService, bookingService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Home = () => {
     const [trains, setTrains] = useState([]);
@@ -41,19 +42,55 @@ const Home = () => {
             return;
         }
 
-        const seats = prompt('How many seats would you like to book?', '1');
-        if (!seats || isNaN(seats) || seats <= 0) return;
+        const { value: formValues } = await Swal.fire({
+            title: 'Confirm Booking',
+            html: `
+                <div class="space-y-4">
+                    <div class="text-left">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Travel Date</label>
+                        <input type="date" id="travel-date" class="swal2-input !w-full !m-0" min="${new Date().toISOString().split('T')[0]}">
+                    </div>
+                    <div class="text-left mt-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Seats Count</label>
+                        <input type="number" id="seats-count" class="swal2-input !w-full !m-0" value="1" min="1" max="10">
+                    </div>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Book Tickets',
+            preConfirm: () => {
+                const travelDate = document.getElementById('travel-date').value;
+                const seats = document.getElementById('seats-count').value;
+                if (!travelDate || !seats) {
+                    Swal.showValidationMessage('Please select a date and seat count');
+                    return false;
+                }
+                return { travelDate, seats: parseInt(seats) };
+            }
+        });
 
-        setBookingLoading(trainId);
-        try {
-            await bookingService.book(trainId, parseInt(seats));
-            setMessage({ text: 'Ticket booked successfully!', type: 'success' });
-            fetchTrains(); // Refresh availability
-        } catch (err) {
-            setMessage({ text: err.response?.data?.message || 'Booking failed.', type: 'error' });
-        } finally {
-            setBookingLoading(null);
-            setTimeout(() => setMessage({ text: '', type: '' }), 5000);
+        if (formValues) {
+            setBookingLoading(trainId);
+            try {
+                await bookingService.book(trainId, formValues.seats, formValues.travelDate);
+                Swal.fire({
+                    title: 'Journey Confirmed!',
+                    text: 'Your ticket has been booked successfully.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                fetchTrains();
+            } catch (err) {
+                Swal.fire({
+                    title: 'Booking Failed',
+                    text: err.response?.data?.message || 'Operation failed',
+                    icon: 'error'
+                });
+            } finally {
+                setBookingLoading(null);
+            }
         }
     };
 

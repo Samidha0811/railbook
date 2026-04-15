@@ -33,9 +33,10 @@ public class BookingController {
 
         Long trainId = Long.valueOf(payload.get("trainId").toString());
         Integer seats = Integer.valueOf(payload.get("seats").toString());
+        String travelDate = payload.get("travelDate").toString();
 
         try {
-            Booking booking = bookingService.bookTicket(user, trainId, seats);
+            Booking booking = bookingService.bookTicket(user, trainId, seats, travelDate);
             return ResponseEntity.ok(booking);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

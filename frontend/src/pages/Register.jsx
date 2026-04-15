@@ -6,7 +6,6 @@ const Register = () => {
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('ROLE_USER');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     
@@ -17,7 +16,7 @@ const Register = () => {
         setError('');
         setLoading(true);
         try {
-            await authService.register(fullname, email, password, role);
+            await authService.register(fullname, email, password, 'ROLE_USER');
             navigate('/login');
         } catch (err) {
             setError(err.response?.data || 'Registration failed. Try again.');
@@ -66,16 +65,6 @@ const Register = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                        </div>
-                        <div>
-                            <select
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-b-md focus:outline-none focus:ring-railway-blue focus:border-railway-blue focus:z-10 sm:text-sm"
-                                value={role}
-                                onChange={(e) => setRole(e.target.value)}
-                            >
-                                <option value="ROLE_USER">Passenger</option>
-                                <option value="ROLE_ADMIN">Administrator</option>
-                            </select>
                         </div>
                     </div>
 

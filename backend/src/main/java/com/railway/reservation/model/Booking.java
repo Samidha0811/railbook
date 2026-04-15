@@ -31,6 +31,12 @@ public class Booking {
     @Column(nullable = false)
     private String status; // BOOKED, CANCELLED
 
+    @Column(nullable = true)
+    private java.math.BigDecimal refundAmount;
+
+    @Column(nullable = false)
+    private String travelDate; // YYYY-MM-DD
+
     @CreationTimestamp
     private LocalDateTime bookingDate;
 
@@ -90,5 +96,21 @@ public class Booking {
 
     public void setBookingDate(LocalDateTime bookingDate) {
         this.bookingDate = bookingDate;
+    }
+
+    public BigDecimal getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(BigDecimal refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public String getTravelDate() {
+        return travelDate;
+    }
+
+    public void setTravelDate(String travelDate) {
+        this.travelDate = travelDate;
     }
 }
