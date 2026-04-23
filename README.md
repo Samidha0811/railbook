@@ -30,6 +30,60 @@ RailBook utilizes a custom-crafted design system focused on:
 
 ---
 
+## 📸 Visual Walkthrough
+
+### 🚆 Passenger Experience
+| Landing Page | Search Trains |
+| :---: | :---: |
+| ![Landing Page](./docs/images/Screenshot%202026-04-24%20024202.png) | ![Search](./docs/images/Screenshot%202026-04-24%20024208.png) |
+
+| Train Results | Detailed View |
+| :---: | :---: |
+| ![Results](./docs/images/Screenshot%202026-04-24%20024308.png) | ![Details](./docs/images/Screenshot%202026-04-24%20024324.png) |
+
+| Booking Details | Payment Process |
+| :---: | :---: |
+| ![Booking](./docs/images/Screenshot%202026-04-24%20024338.png) | ![Payment](./docs/images/Screenshot%202026-04-24%20024351.png) |
+
+| Passenger Dashboard | Booking Confirmation |
+| :---: | :---: |
+| ![Dashboard](./docs/images/Screenshot%202026-04-24%20024513.png) | ![Confirmed](./docs/images/Screenshot%202026-04-24%20024528.png) |
+
+| Ticket View | My Bookings |
+| :---: | :---: |
+| ![Ticket](./docs/images/Screenshot%202026-04-24%20024544.png) | ![History](./docs/images/Screenshot%202026-04-24%20024557.png) |
+
+### 🔐 Administrator Panel
+| Admin Dashboard | Manage Trains |
+| :---: | :---: |
+| ![Admin Dash](./docs/images/Screenshot%202026-04-24%20024624.png) | ![Trains](./docs/images/Screenshot%202026-04-24%20024638.png) |
+
+| Add New Train | Update Fleet |
+| :---: | :---: |
+| ![Add Train](./docs/images/Screenshot%202026-04-24%20024649.png) | ![Update](./docs/images/Screenshot%202026-04-24%20024724.png) |
+
+| User Management | Booking Oversight |
+| :---: | :---: |
+| ![Users](./docs/images/Screenshot%202026-04-24%20024756.png) | ![Bookings](./docs/images/Screenshot%202026-04-24%20024811.png) |
+
+| Booking Controls | Financial Ledger |
+| :---: | :---: |
+| ![Controls](./docs/images/Screenshot%202026-04-24%20024823.png) | ![Ledger](./docs/images/Screenshot%202026-04-24%20024843.png) |
+
+| Transaction Details | Security Exit |
+| :---: | :---: |
+| ![TXN Details](./docs/images/Screenshot%202026-04-24%20024902.png) | ![Logout](./docs/images/Screenshot%202026-04-24%20024934.png) |
+
+| Login Interface | Account Creation |
+| :---: | :---: |
+| ![Login](./docs/images/Screenshot%202026-04-24%20024951.png) | ![Register](./docs/images/Screenshot%202026-04-24%20025013.png) |
+
+| Form Validation | System Readiness |
+| :---: | :---: |
+| ![Validation](./docs/images/Screenshot%202026-04-24%20025027.png) | ![Ready](./docs/images/Screenshot%202026-04-24%20025041.png) |
+
+---
+
 ## 🛠️ Technology Stack
 
 ### Frontend
