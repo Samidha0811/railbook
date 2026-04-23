@@ -41,11 +41,11 @@ RailBook utilizes a custom-crafted design system focused on:
 | :---: | :---: |
 | ![Results](./docs/images/Screenshot%202026-04-24%20024308.png) | ![Details](./docs/images/Screenshot%202026-04-24%20024324.png) |
 
-| Booking Details | Payment Process |
+| Login Page | Register Page |
 | :---: | :---: |
 | ![Booking](./docs/images/Screenshot%202026-04-24%20024338.png) | ![Payment](./docs/images/Screenshot%202026-04-24%20024351.png) |
 
-| Passenger Dashboard | Booking Confirmation |
+| Passenger Dashboard | Available trains |
 | :---: | :---: |
 | ![Dashboard](./docs/images/Screenshot%202026-04-24%20024513.png) | ![Confirmed](./docs/images/Screenshot%202026-04-24%20024528.png) |
 
@@ -53,32 +53,32 @@ RailBook utilizes a custom-crafted design system focused on:
 | :---: | :---: |
 | ![Ticket](./docs/images/Screenshot%202026-04-24%20024544.png) | ![History](./docs/images/Screenshot%202026-04-24%20024557.png) |
 
-### 🔐 Administrator Panel
-| Admin Dashboard | Manage Trains |
+| Payment method | Payment processing |
 | :---: | :---: |
 | ![Admin Dash](./docs/images/Screenshot%202026-04-24%20024624.png) | ![Trains](./docs/images/Screenshot%202026-04-24%20024638.png) |
 
-| Add New Train | Update Fleet |
+| Payment success | logout |
 | :---: | :---: |
 | ![Add Train](./docs/images/Screenshot%202026-04-24%20024649.png) | ![Update](./docs/images/Screenshot%202026-04-24%20024724.png) |
 
-| User Management | Booking Oversight |
+### 🔐 Administrator Panel
+| User Management |  added trains |
 | :---: | :---: |
 | ![Users](./docs/images/Screenshot%202026-04-24%20024756.png) | ![Bookings](./docs/images/Screenshot%202026-04-24%20024811.png) |
 
-| Booking Controls | Financial Ledger |
+| add train Controls | update trains |
 | :---: | :---: |
 | ![Controls](./docs/images/Screenshot%202026-04-24%20024823.png) | ![Ledger](./docs/images/Screenshot%202026-04-24%20024843.png) |
 
-| Transaction Details | Security Exit |
+| delete train Details | All users   |
 | :---: | :---: |
 | ![TXN Details](./docs/images/Screenshot%202026-04-24%20024902.png) | ![Logout](./docs/images/Screenshot%202026-04-24%20024934.png) |
 
-| Login Interface | Account Creation |
+| all bookings | dropdown features |
 | :---: | :---: |
 | ![Login](./docs/images/Screenshot%202026-04-24%20024951.png) | ![Register](./docs/images/Screenshot%202026-04-24%20025013.png) |
 
-| Form Validation | System Readiness |
+| dropdown features | Transactions |
 | :---: | :---: |
 | ![Validation](./docs/images/Screenshot%202026-04-24%20025027.png) | ![Ready](./docs/images/Screenshot%202026-04-24%20025041.png) |
 
