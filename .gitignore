@@ -10,7 +10,6 @@ backend/src/main/resources/application.properties
 *.jar
 *.war
 *.ear
-backend_new.zip
 
 # --- Node / Vite (Frontend) ---
 frontend/node_modules/
@@ -27,14 +26,44 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+logs/
+*.log.*
 
 # --- IDEs and OS ---
-.vscode/*
-!.vscode/extensions.json
-.idea
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db
+desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# --- Security & Secrets ---
+*.pem
+*.key
+*.jks
+*.p12
+*.pfx
+*.crt
+*.p7b
+*.asc
+*.keytab
+secrets.*
+credentials.*
+
+# --- Archives ---
+*.zip
+*.tar*
+*.7z
+*.rar
+backend_new.zip
+
+# --- Databases ---
+*.db
+*.sqlite
+*.sqlite3
+*.mysql
+*.pgsql
