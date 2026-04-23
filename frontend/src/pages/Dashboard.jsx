@@ -60,7 +60,7 @@ const Dashboard = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-6">
             {/* Welcome Section */}
-            <div className="bg-white rounded-xl p-5 mb-5 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="bg-white rounded-xl p-5 mb-5 shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="flex items-center space-x-4">
                     <div className="h-12 w-12 rounded-xl bg-railway-primary/10 border border-railway-primary/20 flex items-center justify-center text-railway-primary-light text-lg font-black">
                         {user?.fullname?.charAt(0)}
@@ -92,8 +92,8 @@ const Dashboard = () => {
                             <Ticket size={16} className="text-railway-primary" />
                             <span>Journey History</span>
                         </h3>
-                        <select 
-                            className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs font-bold text-gray-600 outline-none focus:ring-1 focus:ring-railway-primary"
+                        <select
+                            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-600 outline-none focus:ring-1 focus:ring-railway-primary"
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
                         >
@@ -105,10 +105,10 @@ const Dashboard = () => {
 
                     <div className="space-y-3">
                         {loading ? (
-                            <div className="text-center py-16 bg-white rounded-xl border border-gray-100 text-railway-silver text-sm font-medium">Loading bookings...</div>
+                            <div className="text-center py-16 bg-white rounded-xl border border-slate-100 text-railway-silver text-sm font-medium">Loading bookings...</div>
                         ) : sortedBookings.length > 0 ? (
                             sortedBookings.map((booking) => (
-                                <div key={booking.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                                <div key={booking.id} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
                                     <div className="p-4">
                                         <div className="flex justify-between items-start mb-3">
                                             <div className="flex items-center space-x-3">
@@ -128,31 +128,31 @@ const Dashboard = () => {
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-wrap gap-4 py-2.5 border-t border-gray-50 mb-3 text-xs">
+                                        <div className="flex flex-wrap gap-4 py-2.5 border-t border-slate-50 mb-3 text-xs">
                                             <div>
-                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Route</p>
+                                                <p className="text-[10px] font-bold text-slate-300 uppercase mb-0.5">Route</p>
                                                 <p className="font-bold text-railway-dark">{booking.train.source} → {booking.train.destination}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Date</p>
+                                                <p className="text-[10px] font-bold text-slate-300 uppercase mb-0.5">Date</p>
                                                 <p className="font-bold text-railway-primary">{booking.travelDate}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Passenger</p>
+                                                <p className="text-[10px] font-bold text-slate-300 uppercase mb-0.5">Passenger</p>
                                                 <p className="font-bold text-railway-dark">{booking.passengerName || user.fullname}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-bold text-gray-300 uppercase mb-0.5">Seats</p>
+                                                <p className="text-[10px] font-bold text-slate-300 uppercase mb-0.5">Seats</p>
                                                 <p className="font-bold text-railway-dark">{booking.seatsBooked}</p>
                                             </div>
                                         </div>
 
                                         <div className="flex justify-between items-center">
-                                            <span className="text-[10px] font-medium text-gray-300">
+                                            <span className="text-[10px] font-medium text-slate-300">
                                                 Booked: {new Date(booking.bookingDate).toLocaleDateString()}
                                             </span>
                                             <div className="flex space-x-2">
-                                                <button 
+                                                <button
                                                     onClick={() => navigate(`/train/${booking.train.id}`)}
                                                     className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase text-railway-primary hover:bg-railway-primary/5 transition-colors"
                                                 >
@@ -177,9 +177,9 @@ const Dashboard = () => {
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
-                                <Ticket size={28} className="mx-auto text-gray-200 mb-2" />
-                                <p className="text-sm font-bold text-gray-400">No bookings yet.</p>
+                            <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-slate-200">
+                                <Ticket size={28} className="mx-auto text-slate-200 mb-2" />
+                                <p className="text-sm font-bold text-slate-400">No bookings yet.</p>
                                 <Link to="/home" className="text-railway-primary font-bold uppercase text-xs hover:underline mt-1 inline-block">Book Your First Trip</Link>
                             </div>
                         )}
@@ -194,25 +194,25 @@ const Dashboard = () => {
                             <h3 className="text-sm font-black uppercase tracking-wider">Quick Search</h3>
                         </div>
                         <p className="text-railway-silver text-xs mb-4">Find trains for your next journey.</p>
-                        
+
                         <form onSubmit={(e) => { e.preventDefault(); navigate('/home'); }} className="space-y-3">
                             <div>
                                 <label className="block text-[10px] font-bold uppercase text-railway-silver mb-1">From</label>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     placeholder="Source Station"
                                     className="w-full border border-white/20 rounded-lg px-3 py-2 text-sm font-medium outline-none transition-all"
                                 />
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold uppercase text-railway-silver mb-1">To</label>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     placeholder="Destination Station"
                                     className="w-full border border-white/20 rounded-lg px-3 py-2 text-sm font-medium outline-none transition-all"
                                 />
                             </div>
-                            <button 
+                            <button
                                 type="submit"
                                 className="w-full bg-railway-primary text-white font-bold py-2.5 rounded-lg uppercase tracking-wider text-xs shadow-md hover:bg-railway-primary-light transition-all active:scale-95 mt-1 flex items-center justify-center space-x-2"
                             >

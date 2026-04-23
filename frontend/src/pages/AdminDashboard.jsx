@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
                     <h2 className="text-sm font-bold text-railway-dark mb-4">Weekly Bookings</h2>
                     <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
@@ -94,13 +94,13 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
                     <h2 className="text-sm font-bold text-railway-dark mb-4">Recent Activity</h2>
                     <div className="space-y-2">
                         {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
                                 <div className="flex items-center space-x-3">
-                                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-100">
                                         <Ticket size={14} className="text-railway-primary" />
                                     </div>
                                     <div>

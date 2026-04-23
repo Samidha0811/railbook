@@ -28,7 +28,7 @@ export const trainService = {
 };
 
 export const bookingService = {
-    book: (trainId, seats, travelDate, passengerName, passengerContact) => 
+    book: (trainId, seats, travelDate, passengerName, passengerContact) =>
         api.post('/bookings', { trainId, seats, travelDate, passengerName, passengerContact }),
     getMyBookings: () => api.get('/bookings/my'),
     getAllBookings: () => api.get('/bookings/all'),
@@ -40,6 +40,11 @@ export const adminService = {
     getUsers: () => api.get('/admin/users'),
     toggleUserBlock: (id) => api.put(`/admin/users/${id}/toggle-block`),
     deleteUser: (id) => api.delete(`/admin/users/${id}`),
+};
+
+export const paymentService = {
+    process: (data) => api.post('/payments/process', data),
+    getAll: () => api.get('/payments/all'),
 };
 
 export default api;

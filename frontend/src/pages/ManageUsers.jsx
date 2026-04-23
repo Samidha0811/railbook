@@ -80,26 +80,26 @@ const ManageUsers = () => {
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                 <div>
                     <h1 className="text-base font-black text-railway-dark tracking-tight uppercase">User Management</h1>
                     <p className="text-railway-silver text-xs font-medium">{users.length} registered users</p>
                 </div>
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" size={14} />
                     <input 
                         type="text" 
                         placeholder="Search users..." 
-                        className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none w-48 md:w-64 text-sm font-medium"
+                        className="pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none w-48 md:w-64 text-sm font-medium"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-100">
-                    <thead className="bg-gray-50">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                <table className="min-w-full divide-y divide-slate-100">
+                    <thead className="bg-slate-50">
                         <tr>
                             <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Name</th>
                             <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Email</th>
@@ -108,9 +108,9 @@ const ManageUsers = () => {
                             <th className="px-4 py-3 text-right text-[10px] font-bold text-railway-silver uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-slate-50">
                         {filteredUsers.map((user) => (
-                            <tr key={user.id} className="hover:bg-gray-50/50 transition-colors">
+                            <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
                                 <td className="px-4 py-3 whitespace-nowrap">
                                     <div className="flex items-center space-x-2">
                                         <div className="w-7 h-7 rounded-full bg-railway-primary/10 flex items-center justify-center">
@@ -119,7 +119,7 @@ const ManageUsers = () => {
                                         <span className="font-semibold text-railway-dark text-sm">{user.fullname}</span>
                                     </div>
                                 </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-500">{user.email}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-slate-500">{user.email}</td>
                                 <td className="px-4 py-3 whitespace-nowrap">
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${user.role === 'ROLE_ADMIN' ? 'bg-purple-50 text-purple-600 border border-purple-100' : 'bg-railway-primary/10 text-railway-primary border border-railway-primary/10'}`}>
                                         {user.role.replace('ROLE_', '')}

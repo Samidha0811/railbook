@@ -30,40 +30,40 @@ const ManageTrains = () => {
             html: `
                 <div class="space-y-4 text-left">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">Train Number</label>
+                        <label class="block text-sm font-bold text-slate-700">Train Number</label>
                         <input id="swal-input1" class="swal2-input !w-full !m-0" value="${train?.trainNumber || ''}" placeholder="e.g. 12101">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">Train Name</label>
+                        <label class="block text-sm font-bold text-slate-700">Train Name</label>
                         <input id="swal-input2" class="swal2-input !w-full !m-0" value="${train?.name || ''}" placeholder="e.g. Jnaneswari Express">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Source</label>
+                            <label class="block text-sm font-bold text-slate-700">Source</label>
                             <input id="swal-input3" class="swal2-input !w-full !m-0" value="${train?.source || ''}" placeholder="Mumbai">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Destination</label>
+                            <label class="block text-sm font-bold text-slate-700">Destination</label>
                             <input id="swal-input4" class="swal2-input !w-full !m-0" value="${train?.destination || ''}" placeholder="Delhi">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Departure Time</label>
+                            <label class="block text-sm font-bold text-slate-700">Departure Time</label>
                             <input id="swal-input5" class="swal2-input !w-full !m-0" value="${train?.departureTime || ''}" placeholder="10:30 PM">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Arrival Time</label>
+                            <label class="block text-sm font-bold text-slate-700">Arrival Time</label>
                             <input id="swal-input6" class="swal2-input !w-full !m-0" value="${train?.arrivalTime || ''}" placeholder="06:45 AM">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Total Seats</label>
+                            <label class="block text-sm font-bold text-slate-700">Total Seats</label>
                             <input id="swal-input7" type="number" class="swal2-input !w-full !m-0" value="${train?.totalSeats || ''}">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700">Price (₹)</label>
+                            <label class="block text-sm font-bold text-slate-700">Price (₹)</label>
                             <input id="swal-input8" type="number" class="swal2-input !w-full !m-0" value="${train?.price || ''}">
                         </div>
                     </div>
@@ -144,18 +144,18 @@ const ManageTrains = () => {
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 gap-3">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 gap-3">
                 <div>
                     <h1 className="text-base font-black text-railway-dark tracking-tight uppercase">Train Management</h1>
                     <p className="text-railway-silver text-xs font-medium">{trains.length} trains in fleet</p>
                 </div>
                 <div className="flex w-full md:w-auto space-x-2">
                     <div className="relative flex-grow">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" size={14} />
                         <input 
                             type="text" 
                             placeholder="Search trains..." 
-                            className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none w-full md:w-64 text-sm font-medium"
+                            className="pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none w-full md:w-64 text-sm font-medium"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -172,7 +172,7 @@ const ManageTrains = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {filteredTrains.map((train) => (
-                    <div key={train.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all group">
+                    <div key={train.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
                         <div className="flex justify-between items-start mb-3">
                             <div>
                                 <span className="bg-railway-primary/10 text-railway-primary px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase">#{train.trainNumber}</span>
@@ -185,37 +185,37 @@ const ManageTrains = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 mb-3 text-xs">
-                            <div className="flex items-center space-x-2 text-gray-600">
-                                <MapPin size={12} className="text-gray-300 flex-shrink-0" />
+                            <div className="flex items-center space-x-2 text-slate-600">
+                                <MapPin size={12} className="text-slate-300 flex-shrink-0" />
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Route</p>
+                                    <p className="text-[10px] font-bold text-slate-300 uppercase">Route</p>
                                     <p className="font-semibold">{train.source} → {train.destination}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-2 text-gray-600">
-                                <Clock size={12} className="text-gray-300 flex-shrink-0" />
+                            <div className="flex items-center space-x-2 text-slate-600">
+                                <Clock size={12} className="text-slate-300 flex-shrink-0" />
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Time</p>
+                                    <p className="text-[10px] font-bold text-slate-300 uppercase">Time</p>
                                     <p className="font-semibold">{train.departureTime}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-2 text-gray-600">
-                                <Armchair size={12} className="text-gray-300 flex-shrink-0" />
+                            <div className="flex items-center space-x-2 text-slate-600">
+                                <Armchair size={12} className="text-slate-300 flex-shrink-0" />
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Seats</p>
+                                    <p className="text-[10px] font-bold text-slate-300 uppercase">Seats</p>
                                     <p className="font-semibold">{train.availableSeats}/{train.totalSeats}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-2 text-gray-600">
-                                <span className="text-gray-300 font-bold text-xs flex-shrink-0">₹</span>
+                            <div className="flex items-center space-x-2 text-slate-600">
+                                <span className="text-slate-300 font-bold text-xs flex-shrink-0">₹</span>
                                 <div>
-                                    <p className="text-[10px] font-bold text-gray-300 uppercase">Price</p>
+                                    <p className="text-[10px] font-bold text-slate-300 uppercase">Price</p>
                                     <p className="font-bold text-railway-primary">₹{train.price}</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="w-full bg-gray-100 h-1 rounded-full overflow-hidden">
+                        <div className="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
                             <div 
                                 className={`h-full transition-all duration-500 ${train.availableSeats / train.totalSeats < 0.2 ? 'bg-red-500' : 'bg-green-500'}`}
                                 style={{ width: `${(train.availableSeats / train.totalSeats) * 100}%` }}
@@ -226,9 +226,9 @@ const ManageTrains = () => {
             </div>
             
             {!loading && filteredTrains.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
-                    <Search size={32} className="text-gray-200 mb-2" />
-                    <p className="text-gray-400 font-bold text-sm">No trains found</p>
+                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-xl border-2 border-dashed border-slate-200">
+                    <Search size={32} className="text-slate-200 mb-2" />
+                    <p className="text-slate-400 font-bold text-sm">No trains found</p>
                 </div>
             )}
         </div>

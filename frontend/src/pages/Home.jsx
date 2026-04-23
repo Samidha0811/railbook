@@ -49,19 +49,19 @@ const Home = () => {
             html: `
                 <div class="space-y-4">
                     <div class="text-left">
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Passenger Name</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Passenger Name</label>
                         <input type="text" id="passenger-name" class="swal2-input !w-full !m-0" value="${user.fullname}">
                     </div>
                     <div class="text-left">
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Contact Number</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Contact Number</label>
                         <input type="text" id="passenger-contact" class="swal2-input !w-full !m-0" placeholder="10 digit number">
                     </div>
                     <div class="text-left">
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Travel Date</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Travel Date</label>
                         <input type="date" id="travel-date" class="swal2-input !w-full !m-0" value="${travelDate}" min="${new Date().toISOString().split('T')[0]}">
                     </div>
                     <div class="text-left mt-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Seats Count</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Seats Count</label>
                         <input type="number" id="seats-count" class="swal2-input !w-full !m-0" value="1" min="1" max="10">
                     </div>
                 </div>
@@ -91,22 +91,28 @@ const Home = () => {
         if (formValues) {
             setBookingLoading(trainId);
             try {
-                await bookingService.book(
+                const res = await bookingService.book(
                     trainId, 
                     formValues.seats, 
                     formValues.travelDate, 
                     formValues.passengerName, 
                     formValues.passengerContact
                 );
+                const bookingId = res.data.id;
+
                 Swal.fire({
-                    title: 'Journey Confirmed!',
-                    text: 'Your ticket has been booked successfully.',
-                    icon: 'success',
-                    timer: 2000,
+                    title: 'Redirecting to Payment',
+                    text: 'Redirecting you to our secure payment gateway...',
+                    icon: 'info',
+                    timer: 1500,
                     showConfirmButton: false,
-                    confirmButtonColor: '#059669'
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                }).then(() => {
+                    navigate(`/payment/${bookingId}`, { state: { amount: res.data.totalPrice } });
                 });
-                fetchTrains();
             } catch (err) {
                 Swal.fire({
                     title: 'Booking Failed',
@@ -183,8 +189,8 @@ const Home = () => {
                     </div>
                 ) : trains.length > 0 ? (
                     trains.map((train) => (
-                        <div key={train.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 overflow-hidden flex flex-col md:flex-row group">
-                            <div className="bg-railway-dark/5 p-4 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-gray-100 md:w-36">
+                        <div key={train.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-100 overflow-hidden flex flex-col md:flex-row group">
+                            <div className="bg-railway-dark/5 p-4 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-slate-100 md:w-36">
                                 <span className="text-xl font-black text-railway-primary tracking-tight">#{train.trainNumber}</span>
                                 <span className="text-[9px] uppercase tracking-widest text-railway-silver font-bold mt-0.5">Express</span>
                             </div>
@@ -194,8 +200,8 @@ const Home = () => {
                                     <div className="flex items-center text-xs font-bold">
                                         <span className="text-railway-primary uppercase">{train.source}</span>
                                         <div className="mx-3 flex items-center">
-                                            <div className="h-px w-8 bg-gray-200"></div>
-                                            <ArrowRight size={10} className="text-gray-300 -ml-1" />
+                                            <div className="h-px w-8 bg-slate-200"></div>
+                                            <ArrowRight size={10} className="text-slate-300 -ml-1" />
                                         </div>
                                         <span className="text-railway-primary uppercase">{train.destination}</span>
                                     </div>
@@ -214,7 +220,7 @@ const Home = () => {
                                     <button
                                         onClick={() => handleBook(train.id)}
                                         disabled={train.availableSeats === 0 || bookingLoading === train.id}
-                                        className={`w-full px-3 py-2 rounded-lg font-bold text-xs uppercase transition-all ${train.availableSeats > 0 ? 'bg-railway-primary text-white hover:bg-railway-primary-light shadow-sm' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                                        className={`w-full px-3 py-2 rounded-lg font-bold text-xs uppercase transition-all ${train.availableSeats > 0 ? 'bg-railway-primary text-white hover:bg-railway-primary-light shadow-sm' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}
                                     >
                                         {bookingLoading === train.id ? 'Booking...' : train.availableSeats > 0 ? 'Book Now' : 'Sold Out'}
                                     </button>
@@ -229,9 +235,9 @@ const Home = () => {
                         </div>
                     ))
                 ) : (
-                    <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
-                        <Search size={32} className="mx-auto text-gray-200 mb-3" />
-                        <p className="text-sm font-bold text-gray-400">No trains found for this route.</p>
+                    <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-slate-200">
+                        <Search size={32} className="mx-auto text-slate-200 mb-3" />
+                        <p className="text-sm font-bold text-slate-400">No trains found for this route.</p>
                         <button onClick={() => { setSource(''); setDestination(''); fetchTrains(); }} className="text-railway-primary font-bold text-xs uppercase hover:underline mt-1">Clear Filters</button>
                     </div>
                 )}

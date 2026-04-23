@@ -65,28 +65,29 @@ const ManageBookings = () => {
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 gap-3">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 gap-3">
                 <div>
                     <h1 className="text-base font-black text-railway-dark tracking-tight uppercase">Booking Ledger</h1>
                     <p className="text-railway-silver text-xs font-medium">{bookings.length} total reservations</p>
                 </div>
                 <div className="flex flex-wrap gap-2 w-full lg:w-auto">
                     <div className="relative flex-grow lg:flex-none">
-                        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
-                        <select 
-                            className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-gray-600 text-sm min-w-[130px]"
+                        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" size={12} />
+                        <select
+                            className="pl-8 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-slate-600 text-sm min-w-[130px]"
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
                         >
                             <option value="ALL">All Status</option>
+                            <option value="PAYMENT_PENDING">Pending Payment</option>
                             <option value="BOOKED">Booked</option>
                             <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
                     <div className="relative flex-grow lg:flex-none">
-                        <TrainIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
-                        <select 
-                            className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-gray-600 text-sm min-w-[160px]"
+                        <TrainIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" size={12} />
+                        <select
+                            className="pl-8 pr-3 py-2 border border-slate-200 rounded-lg focus:ring-1 focus:ring-railway-primary outline-none bg-white font-medium text-slate-600 text-sm min-w-[160px]"
                             value={filterTrain}
                             onChange={(e) => setFilterTrain(e.target.value)}
                         >
@@ -97,9 +98,9 @@ const ManageBookings = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-100">
-                    <thead className="bg-gray-50">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                <table className="min-w-full divide-y divide-slate-100">
+                    <thead className="bg-slate-50">
                         <tr>
                             <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Ref</th>
                             <th className="px-4 py-3 text-left text-[10px] font-bold text-railway-silver uppercase tracking-wider">Passenger</th>
@@ -108,9 +109,9 @@ const ManageBookings = () => {
                             <th className="px-4 py-3 text-right text-[10px] font-bold text-railway-silver uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-slate-50">
                         {filteredBookings.map((book) => (
-                            <tr key={book.id} className="hover:bg-gray-50/50 transition-colors">
+                            <tr key={book.id} className="hover:bg-slate-50/50 transition-colors">
                                 <td className="px-4 py-3 whitespace-nowrap">
                                     <div className="font-bold text-railway-dark text-sm">BK-{book.id.toString().padStart(4, '0')}</div>
                                 </td>
@@ -121,23 +122,29 @@ const ManageBookings = () => {
                                         </div>
                                         <div>
                                             <div className="text-sm font-semibold text-railway-dark">{book.user.fullname}</div>
-                                            <div className="text-[10px] text-gray-400">{book.user.email}</div>
+                                            <div className="text-[10px] text-slate-400">{book.user.email}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap">
-                                    <div className="flex items-center space-x-1.5 text-sm font-semibold text-gray-700">
-                                        <TrainIcon size={12} className="text-gray-300" />
+                                    <div className="flex items-center space-x-1.5 text-sm font-semibold text-slate-700">
+                                        <TrainIcon size={12} className="text-slate-300" />
                                         <span>{book.train.name}</span>
                                     </div>
-                                    <div className="flex items-center space-x-1.5 text-[10px] text-gray-400 mt-0.5">
-                                        <Calendar size={10} className="text-gray-300" />
+                                    <div className="flex items-center space-x-1.5 text-[10px] text-slate-400 mt-0.5">
+                                        <Calendar size={10} className="text-slate-300" />
                                         <span className="font-medium">{book.travelDate || 'N/A'}</span>
                                     </div>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap">
                                     <div className="text-sm font-bold text-railway-primary">₹{book.totalPrice}</div>
-                                    <span className={`inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${book.status === 'BOOKED' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-red-50 text-red-500 border border-red-100'}`}>
+                                    <span className={`inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                                        book.status === 'BOOKED' 
+                                        ? 'bg-green-50 text-green-600 border border-green-100' 
+                                        : book.status === 'PAYMENT_PENDING'
+                                        ? 'bg-amber-50 text-amber-600 border border-amber-100'
+                                        : 'bg-red-50 text-red-500 border border-red-100'
+                                    }`}>
                                         {book.status}
                                     </span>
                                     {book.status === 'CANCELLED' && book.refundAmount && (
@@ -146,7 +153,7 @@ const ManageBookings = () => {
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-right">
                                     {book.status === 'BOOKED' && (
-                                        <button 
+                                        <button
                                             onClick={() => handleCancel(book.id)}
                                             className="text-red-500 hover:text-white hover:bg-red-500 p-1.5 rounded-lg transition-all border border-red-100 hover:border-red-500"
                                             title="Cancel"

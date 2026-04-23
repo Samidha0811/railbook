@@ -39,7 +39,7 @@ const LandingPage = () => {
                                 Your Journey,<br />
                                 <span className="text-gradient">Simplified.</span>
                             </h1>
-                            <p className="text-gray-300 text-base lg:text-lg mb-6 max-w-lg leading-relaxed">
+                            <p className="text-slate-300 text-base lg:text-lg mb-6 max-w-lg leading-relaxed">
                                 Book railway tickets instantly. Track routes, manage reservations, and travel worry-free with RailBook.
                             </p>
                             <div className="flex flex-wrap gap-3">
@@ -98,7 +98,7 @@ const LandingPage = () => {
                                     </div>
                                 </div>
                                 <div className="absolute -bottom-4 -right-4 w-40 h-24 bg-gradient-to-br from-railway-muted to-railway-dark rounded-2xl border border-white/10 p-4 shadow-xl">
-                                    <p className="text-[10px] text-gray-300 font-bold uppercase mb-1">Today's Bookings</p>
+                                    <p className="text-[10px] text-slate-300 font-bold uppercase mb-1">Today's Bookings</p>
                                     <p className="text-2xl font-black text-railway-primary-light">1,247</p>
                                     <p className="text-[10px] text-green-400 font-bold">↑ 12% from yesterday</p>
                                 </div>
@@ -115,7 +115,7 @@ const LandingPage = () => {
                         {stats.map((stat, i) => (
                             <div key={i} className="text-center">
                                 <p className="text-2xl lg:text-3xl font-black text-railway-primary-light">{stat.value}</p>
-                                <p className="text-xs text-gray-300 font-semibold uppercase tracking-wider mt-0.5">{stat.label}</p>
+                                <p className="text-xs text-slate-300 font-semibold uppercase tracking-wider mt-0.5">{stat.label}</p>
                             </div>
                         ))}
                     </div>
@@ -127,16 +127,16 @@ const LandingPage = () => {
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="text-center mb-10">
                         <h2 className="text-2xl lg:text-3xl font-black text-railway-dark mb-2">Why Choose RailBook?</h2>
-                        <p className="text-gray-500 text-sm max-w-md mx-auto">Everything you need for a seamless railway booking experience.</p>
+                        <p className="text-slate-500 text-sm max-w-md mx-auto">Everything you need for a seamless railway booking experience.</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {features.map((feature, i) => (
-                            <div key={i} className="group bg-white rounded-xl p-5 border border-gray-100 hover:border-railway-primary/30 hover:shadow-lg hover:shadow-railway-primary/5 transition-all duration-300">
+                            <div key={i} className="group bg-white rounded-xl p-5 border border-slate-100 hover:border-railway-primary/30 hover:shadow-lg hover:shadow-railway-primary/5 transition-all duration-300">
                                 <div className="w-10 h-10 bg-railway-primary/10 rounded-lg flex items-center justify-center mb-3 group-hover:bg-railway-primary/20 transition-colors">
                                     <feature.icon size={20} className="text-railway-primary" />
                                 </div>
                                 <h3 className="font-bold text-railway-dark text-sm mb-1">{feature.title}</h3>
-                                <p className="text-gray-500 text-xs leading-relaxed">{feature.desc}</p>
+                                <p className="text-slate-500 text-xs leading-relaxed">{feature.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -144,11 +144,11 @@ const LandingPage = () => {
             </section>
 
             {/* How It Works */}
-            <section className="bg-white py-14 border-t border-gray-100">
+            <section className="bg-white py-14 border-t border-slate-100">
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="text-center mb-10">
                         <h2 className="text-2xl lg:text-3xl font-black text-railway-dark mb-2">How It Works</h2>
-                        <p className="text-gray-500 text-sm">Three simple steps to your next journey.</p>
+                        <p className="text-slate-500 text-sm">Three simple steps to your next journey.</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {[
@@ -162,7 +162,7 @@ const LandingPage = () => {
                                     <item.icon size={22} className="text-railway-primary" />
                                 </div>
                                 <h3 className="font-bold text-railway-dark mb-1">{item.title}</h3>
-                                <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
+                                <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -173,7 +173,7 @@ const LandingPage = () => {
             <section className="bg-gradient-to-r from-railway-dark to-railway-muted py-14">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-2xl lg:text-3xl font-black text-white mb-3">Ready to Book Your Next Journey?</h2>
-                    <p className="text-gray-300 text-sm mb-6 max-w-md mx-auto">Join thousands of happy travelers who trust RailBook for their railway reservations.</p>
+                    <p className="text-slate-300 text-sm mb-6 max-w-md mx-auto">Join thousands of happy travelers who trust RailBook for their railway reservations.</p>
                     <div className="flex justify-center gap-3">
                         <Link
                             to={user ? "/home" : "/register"}

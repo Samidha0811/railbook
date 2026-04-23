@@ -38,7 +38,8 @@ public class BookingController {
         String passengerContact = payload.getOrDefault("passengerContact", "").toString();
 
         try {
-            Booking booking = bookingService.bookTicket(user, trainId, seats, travelDate, passengerName, passengerContact);
+            Booking booking = bookingService.bookTicket(user, trainId, seats, travelDate, passengerName,
+                    passengerContact);
             return ResponseEntity.ok(booking);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

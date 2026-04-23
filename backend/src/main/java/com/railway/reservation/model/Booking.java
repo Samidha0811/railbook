@@ -46,7 +46,8 @@ public class Booking {
     @CreationTimestamp
     private LocalDateTime bookingDate;
 
-    public Booking() {}
+    public Booking() {
+    }
 
     public Long getId() {
         return id;
